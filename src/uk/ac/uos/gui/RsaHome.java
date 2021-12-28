@@ -31,7 +31,10 @@ public class RsaHome {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 //System.out.println("Event - " + listOfKeyPairs.getSelectedIndex());
-                new RsaDisplayKeyPairDialog(rsaKeyPairManager.getKeyPairByIndex(listOfKeyPairs.getSelectedIndex()));
+                if(listOfKeyPairs.getSelectedIndex()!=-1) {
+                    new RsaDisplayKeyPairDialog(listOfKeyPairs.getSelectedIndex(), rsaKeyPairManager);
+                    listOfKeyPairs.setListData(rsaKeyPairManager.getListOfNames());
+                }
             }
         });
 

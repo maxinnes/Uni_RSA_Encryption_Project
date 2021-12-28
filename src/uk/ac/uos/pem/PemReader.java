@@ -13,19 +13,6 @@ import java.util.Base64;
 import java.util.Objects;
 
 public abstract class PemReader {
-    public static void main(String[] args) throws IOException {
-//        RsaPrivateKey test1 = PemReader.getPrivateKeyFromPem(new File("/Users/maxinnes/Projects/Uni_RSA_Encryption_Project/keys/Test 1_private.pem"));
-//
-//        PemReader.writePrivateKeyToPemFile(test1,"test");
-
-//        RsaPrivateKey test2 = PemReader.getPrivateKeyFromPem(new File("/Users/maxinnes/Projects/Uni_RSA_Encryption_Project/keys/test_private.pem"));
-
-        RsaPublicKey test3 = PemReader.getPublicKeyFromPem(new File("/Users/maxinnes/Projects/Uni_RSA_Encryption_Project/keys/Test 1_public.pem"));
-
-        PemReader.writePublicKeyToPemFile(test3,"test");
-
-    }
-
     private static String getBase64FromPem(String pemText,String pemLabel){
         String pemBeginLabel = "-----BEGIN "+pemLabel+"-----";
         String pemEndLabel = "-----END "+pemLabel+"-----";
@@ -111,8 +98,6 @@ public abstract class PemReader {
             writeNewPemFile.write(pemFileContents);
             writeNewPemFile.close();
         }
-
-        System.out.println("test");
     }
 
     public static void writePublicKeyToPemFile(RsaPublicKey rsaPublicKey,String fileName) throws IOException {
@@ -138,5 +123,12 @@ public abstract class PemReader {
             writeNewPemFile.write(pemFileContents);
             writeNewPemFile.close();
         }
+    }
+
+    public static void deletePemFile(String fileName){
+        String currentDirectory = System.getProperty("user.dir")+"/keys/";
+        String fullFilePath = currentDirectory+fileName;
+        File fileToDelete = new File(fullFilePath);
+        fileToDelete.delete();
     }
 }

@@ -80,6 +80,15 @@ public class RsaKeyPairManager {
         return listOfKeyPairs.get(indexSelection);
     }
 
+    public void deleteKeyPairByIndex(int indexSelection) throws IOException {
+        RsaKeyPair rsaKeyPair = this.getKeyPairByIndex(indexSelection);
+        PemReader.deletePemFile(rsaKeyPair.getKeyPairName()+"_private.pem");
+        PemReader.deletePemFile(rsaKeyPair.getKeyPairName()+"_public.pem");
+
+        listOfKeyPairs.remove(indexSelection);
+        updateJsonDb();
+    }
+
     private void updateJsonDb() throws IOException {
         HashMap<String,ArrayList<HashMap<String,Object>>> rootJson = new HashMap<String,ArrayList<HashMap<String,Object>>>();
 
@@ -101,7 +110,7 @@ public class RsaKeyPairManager {
 
     public void addAdditionalKeyPair(RsaKeyPair newKeyPairToAdd) throws IOException {
         listOfKeyPairs.add(newKeyPairToAdd);
-        PemReader.writePrivateKeyToPemFile(newKeyPairToAdd.getPrivateKey(),newKeyPairToAdd.getKeyPairName());
+        PemReader.writePrivateKeyToPemFile(newKeyPairToAdd.getPrivateKey(), newKeyPairToAdd.getKeyPairName());
         PemReader.writePublicKeyToPemFile(newKeyPairToAdd.getPublicKey(), newKeyPairToAdd.getKeyPairName());
         updateJsonDb();
     }
