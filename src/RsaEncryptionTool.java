@@ -3,6 +3,8 @@ import uk.ac.uos.rsa.RsaKeyPairManager;
 
 import java.io.IOException;
 
+// TODO make sure to check it keys directory exists
+
 public class RsaEncryptionTool {
     public static void main(String[] args) throws IOException {
         RsaKeyPairManager rsaKeyPairManager = new RsaKeyPairManager("db1.json");

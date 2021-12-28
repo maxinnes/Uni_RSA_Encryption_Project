@@ -16,10 +16,6 @@ public class RsaKeyPairManager {
     private ArrayList<RsaKeyPair> listOfKeyPairs = new ArrayList<RsaKeyPair>();
     private Path pathOfDb;
 
-    public static void main(String[] args) throws IOException {
-        RsaKeyPairManager testing = new RsaKeyPairManager("db.json");
-    }
-
     public RsaKeyPairManager(String jsonFileName) throws IOException { // TODO if file does not exist, create it
         String currentDirectory = System.getProperty("user.dir");
         Path dbFilePath = Path.of(currentDirectory+"/"+jsonFileName);
@@ -106,6 +102,25 @@ public class RsaKeyPairManager {
         FileWriter newDbJson = new FileWriter(pathOfDb.toString());
         newDbJson.write(jsonContents.toString());
         newDbJson.close();
+    }
+
+    public void renameKeyPair(int indexSelection,String newName) throws IOException {
+        RsaKeyPair oldKeyPair = getKeyPairByIndex(indexSelection);
+
+        String oldPrivateKeyFileName = oldKeyPair.getKeyPairName()+"_private.pem";
+        String oldPublicFileName = oldKeyPair.getKeyPairName()+"_public.pem";
+
+        RsaKeyPair newKeyPair = new RsaKeyPair(oldKeyPair.getKeyPairBitLength(), newName, oldKeyPair.getPrivateKey(), oldKeyPair.getPublicKey());
+
+        String newPrivateKeyFileName = newKeyPair.getKeyPairName()+"_private.pem";
+        String newPublicFileName = newKeyPair.getKeyPairName()+"_public.pem";
+
+        PemReader.renamePemFile(oldPrivateKeyFileName,newPrivateKeyFileName);
+        PemReader.renamePemFile(oldPublicFileName,newPublicFileName);
+
+        listOfKeyPairs.set(indexSelection,newKeyPair);
+
+        updateJsonDb();
     }
 
     public void addAdditionalKeyPair(RsaKeyPair newKeyPairToAdd) throws IOException {

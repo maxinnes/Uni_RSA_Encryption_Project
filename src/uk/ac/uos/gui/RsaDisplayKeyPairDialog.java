@@ -41,6 +41,17 @@ public class RsaDisplayKeyPairDialog extends JDialog {
                 dispose();
             }
         });
+        updateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String newName = keyPairNameField.getText();
+                try {
+                    rsaKeyPairManager.renameKeyPair(listIndex,newName);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                dispose();
+            }
+        });
 
         setContentPane(contentPane);
         setModal(true);

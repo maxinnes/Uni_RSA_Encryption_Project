@@ -131,4 +131,13 @@ public abstract class PemReader {
         File fileToDelete = new File(fullFilePath);
         fileToDelete.delete();
     }
+
+    public static void renamePemFile(String oldFileName,String newFileName){
+        String currentDirectory = System.getProperty("user.dir")+"/keys/";
+        String fullOldFileName = currentDirectory+oldFileName;
+        String fullNewFileName = currentDirectory+newFileName;
+        File oldFile = new File(fullOldFileName);
+        File newFile = new File(fullNewFileName);
+        oldFile.renameTo(newFile);
+    }
 }
