@@ -1,0 +1,10 @@
+{
+    "keyPairs":[
+      {
+      "name": "Test 1",
+      "bitLength": 2048,
+      "privateKeyFileName":"Test 1_private.pem",
+      "publicKeyFileName":"Test 1_public.pem"
+    }
+  ]
+}

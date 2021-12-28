@@ -45,7 +45,7 @@ public abstract class PemReader {
         // Check for correct object
         DLSequence firstSequence = (DLSequence) asn1Content.getObjectAt(0);
         ASN1ObjectIdentifier objectIdentifier = (ASN1ObjectIdentifier) firstSequence.getObjectAt(0);
-        if(Objects.equals(objectIdentifier.toString(), "1.2.840.113549.1.1.1")){ // If correct type
+        if(Objects.equals(objectIdentifier.toString(), "1.2.840.113549.1.1.1")){
             DERBitString derBitString = (DERBitString) asn1Content.getObjectAt(1);
             DLSequence secondSequence = (DLSequence) DLSequence.getInstance(derBitString.getBytes());
             ASN1Integer asn1Modulus = (ASN1Integer) secondSequence.getObjectAt(0);

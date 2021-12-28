@@ -6,14 +6,18 @@ import java.util.Random;
 
 public class RsaKeyPair {
 
-    private RsaPrivateKey privateKey;
-    private RsaPublicKey publicKey;
+    private final RsaPrivateKey privateKey;
+    private final RsaPublicKey publicKey;
+    private int keyPairBitLength;
+    private String keyPairName;
 
     public static void main(String[] args) {
-        RsaKeyPair test1 = new RsaKeyPair(2048);
+        RsaKeyPair test1 = new RsaKeyPair(2048,"test1");
     }
 
-    public RsaKeyPair(int bitLength){
+    public RsaKeyPair(int bitLength,String parseKeyPairName){
+        keyPairBitLength = bitLength;
+        keyPairName = parseKeyPairName;
         while (true){
             // Generate random prime numbers
             Random rng = new Random();
@@ -36,9 +40,17 @@ public class RsaKeyPair {
             }
         }
     }
-    public RsaKeyPair(RsaPrivateKey parsedPrivateKey, RsaPublicKey parsedPublicKey){
+    public RsaKeyPair(int bitLength,String parseKeyPairName,RsaPrivateKey parsedPrivateKey, RsaPublicKey parsedPublicKey){
+        keyPairBitLength = bitLength;
+        keyPairName = parseKeyPairName;
         privateKey = parsedPrivateKey;
         publicKey = parsedPublicKey;
+    }
+    public RsaPublicKey getPublicKey(){
+        return publicKey;
+    }
+    public RsaPrivateKey getPrivateKey(){
+        return privateKey;
     }
     private static BigInteger gcd(BigInteger a, BigInteger b){
         if(Objects.equals(b, BigInteger.ZERO)){

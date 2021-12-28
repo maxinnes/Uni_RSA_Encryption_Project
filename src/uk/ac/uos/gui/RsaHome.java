@@ -11,8 +11,13 @@ public class RsaHome {
 
     private JPanel mainPanel;
     private JButton generateNewKeyPairButton;
+    private JList listOfKeyPairs;
 
     public RsaHome(){
+        // Construct components
+        String[] test1 = {"Item1","Item2"};
+        listOfKeyPairs.setListData(test1);
+
         // Add events
         generateNewKeyPairButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
