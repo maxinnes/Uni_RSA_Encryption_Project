@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import uk.ac.uos.rsa.RsaKeyPair;
+import uk.ac.uos.rsa.RsaKeyPairManager;
 
 public class GenerateNewPairKeyMenu extends JDialog{
     private JPanel mainPanel;
@@ -12,7 +15,7 @@ public class GenerateNewPairKeyMenu extends JDialog{
     private JButton generateButton;
     private JTextField keyPairName;
 
-    public GenerateNewPairKeyMenu(){
+    public GenerateNewPairKeyMenu(RsaKeyPairManager rsaKeyPairManager){
         // Set combo box options
         keyPairBitLength.addItem(2048);
         keyPairBitLength.addItem(4096);
@@ -24,6 +27,11 @@ public class GenerateNewPairKeyMenu extends JDialog{
                 String newKeypairName = keyPairName.getText();
 
                 RsaKeyPair newKeyPair = new RsaKeyPair(bitLength,newKeypairName);
+                try {
+                    rsaKeyPairManager.addAdditionalKeyPair(newKeyPair);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 

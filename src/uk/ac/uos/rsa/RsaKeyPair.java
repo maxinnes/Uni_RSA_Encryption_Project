@@ -52,6 +52,12 @@ public class RsaKeyPair {
     public RsaPrivateKey getPrivateKey(){
         return privateKey;
     }
+    public int getKeyPairBitLength(){
+        return keyPairBitLength;
+    }
+    public String getKeyPairName(){
+        return keyPairName;
+    }
     private static BigInteger gcd(BigInteger a, BigInteger b){
         if(Objects.equals(b, BigInteger.ZERO)){
             return a;

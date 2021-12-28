@@ -1,6 +1,7 @@
 package uk.ac.uos.gui;
 
 import uk.ac.uos.gui.*;
+import uk.ac.uos.rsa.RsaKeyPairManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,15 +14,14 @@ public class RsaHome {
     private JButton generateNewKeyPairButton;
     private JList listOfKeyPairs;
 
-    public RsaHome(){
+    public RsaHome(RsaKeyPairManager rsaKeyPairManager){
         // Construct components
-        String[] test1 = {"Item1","Item2"};
-        listOfKeyPairs.setListData(test1);
+        listOfKeyPairs.setListData(rsaKeyPairManager.getListOfNames());
 
         // Add events
         generateNewKeyPairButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GenerateNewPairKeyMenu generateNewPairKeyMenu = new GenerateNewPairKeyMenu();
+                GenerateNewPairKeyMenu generateNewPairKeyMenu = new GenerateNewPairKeyMenu(rsaKeyPairManager);
             }
         });
 
@@ -36,7 +36,7 @@ public class RsaHome {
     }
 
     public static void main(String[] args) {
-        RsaHome test1 = new RsaHome();
+        //RsaHome test1 = new RsaHome();
     }
 
 }

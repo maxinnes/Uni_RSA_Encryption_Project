@@ -3,10 +3,13 @@ package uk.ac.uos.rsa;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import uk.ac.uos.pem.PemReader;
 
 public class RsaKeyPairManager {
@@ -40,13 +43,40 @@ public class RsaKeyPairManager {
                 e.printStackTrace();
             }
         });
+        pathOfDb = dbFilePath;
     }
 
-    private void updateJsonDb(){
-        
+    public String[] getListOfNames(){
+        ArrayList<String> tempList = new ArrayList<>();
+        listOfKeyPairs.forEach(rsaKeyPair ->{
+            tempList.add(rsaKeyPair.getKeyPairName());
+        });
+        String[] stringArray = new String[tempList.size()];
+        stringArray = tempList.toArray(stringArray);
+        return stringArray;
     }
 
-    public void addAdditionalKeyPair(RsaKeyPair newKeyPairToAdd){
+    private void updateJsonDb() throws IOException {
+        HashMap<String,ArrayList<HashMap<String,Object>>> rootJson = new HashMap<String,ArrayList<HashMap<String,Object>>>();
+
+        ArrayList<HashMap<String,Object>> tempList = new ArrayList<>();
+        listOfKeyPairs.forEach(rsaKeyPair -> {
+            HashMap<String,Object> tempHashMap = new HashMap<>();
+            tempHashMap.put("name",rsaKeyPair.getKeyPairName());
+            tempHashMap.put("bitLength",rsaKeyPair.getKeyPairBitLength());
+            tempHashMap.put("privateKeyFileName",rsaKeyPair.getKeyPairName()+"_private.pem");
+            tempHashMap.put("publicKeyFileName",rsaKeyPair.getKeyPairName()+"_public.pem");
+            tempList.add(tempHashMap);
+        });
+        rootJson.put("keyPairs",tempList);
+        JSONObject jsonContents = new JSONObject(rootJson);
+        FileWriter newDbJson = new FileWriter(pathOfDb.toString());
+        newDbJson.write(jsonContents.toString());
+        newDbJson.close();
+    }
+
+    public void addAdditionalKeyPair(RsaKeyPair newKeyPairToAdd) throws IOException {
         listOfKeyPairs.add(newKeyPairToAdd);
+        updateJsonDb();
     }
 }

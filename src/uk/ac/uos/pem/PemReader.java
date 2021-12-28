@@ -1,11 +1,10 @@
 package uk.ac.uos.pem;
 
 import org.bouncycastle.asn1.*;
-
 import uk.ac.uos.rsa.RsaPublicKey;
 import uk.ac.uos.rsa.RsaPrivateKey;
-
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
@@ -15,7 +14,16 @@ import java.util.Objects;
 
 public abstract class PemReader {
     public static void main(String[] args) throws IOException {
-        RsaPrivateKey test1 = PemReader.getPrivateKeyFromPem(new File("C:\\Users\\Max\\Downloads\\private1.pem"));
+//        RsaPrivateKey test1 = PemReader.getPrivateKeyFromPem(new File("/Users/maxinnes/Projects/Uni_RSA_Encryption_Project/keys/Test 1_private.pem"));
+//
+//        PemReader.writePrivateKeyToPemFile(test1,"test");
+
+//        RsaPrivateKey test2 = PemReader.getPrivateKeyFromPem(new File("/Users/maxinnes/Projects/Uni_RSA_Encryption_Project/keys/test_private.pem"));
+
+        RsaPublicKey test3 = PemReader.getPublicKeyFromPem(new File("/Users/maxinnes/Projects/Uni_RSA_Encryption_Project/keys/Test 1_public.pem"));
+
+        PemReader.writePublicKeyToPemFile(test3,"test");
+
     }
 
     private static String getBase64FromPem(String pemText,String pemLabel){
@@ -70,9 +78,9 @@ public abstract class PemReader {
         ASN1Integer asn1PrivateExponent = (ASN1Integer) asn1Content.getObjectAt(3);
         ASN1Integer asn1Prime1 = (ASN1Integer) asn1Content.getObjectAt(4);
         ASN1Integer asn1Prime2 = (ASN1Integer) asn1Content.getObjectAt(5);
-        ASN1Integer asn1Exponent1 = (ASN1Integer) asn1Content.getObjectAt(6);
-        ASN1Integer asn1Exponent2 = (ASN1Integer) asn1Content.getObjectAt(7);
-        ASN1Integer asn1Coefficient = (ASN1Integer) asn1Content.getObjectAt(8);
+//        ASN1Integer asn1Exponent1 = (ASN1Integer) asn1Content.getObjectAt(6);
+//        ASN1Integer asn1Exponent2 = (ASN1Integer) asn1Content.getObjectAt(7);
+//        ASN1Integer asn1Coefficient = (ASN1Integer) asn1Content.getObjectAt(8);
 
         BigInteger n = asn1Modulus.getValue();
         BigInteger e = asn1PublicExponent.getValue();
@@ -81,5 +89,54 @@ public abstract class PemReader {
         BigInteger q = asn1Prime2.getValue();
 
         return new RsaPrivateKey(n,e,d,p,q);
+    }
+
+    public static void writePrivateKeyToPemFile(RsaPrivateKey rsaPrivateKey,String fileName) throws IOException {
+        String currentDirectory = System.getProperty("user.dir")+"/keys/";
+        ASN1Integer asn1Blank = new ASN1Integer(BigInteger.ZERO);
+        ASN1Integer asn1Modulus = new ASN1Integer(rsaPrivateKey.getModulus());
+        ASN1Integer asn1PublicExponent = new ASN1Integer(rsaPrivateKey.getPublicExponent());
+        ASN1Integer asn1PrivateExponent = new ASN1Integer(rsaPrivateKey.getPrivateExponent());
+        ASN1Integer asn1Prime1 = new ASN1Integer(rsaPrivateKey.getP());
+        ASN1Integer asn1Prime2 = new ASN1Integer(rsaPrivateKey.getQ());
+        ASN1Integer[] asn1Array = {asn1Blank,asn1Modulus,asn1PublicExponent,asn1PrivateExponent,asn1Prime1,asn1Prime2};
+        DLSequence dlSequence = new DLSequence(asn1Array);
+        byte[] derEncodedArray = dlSequence.getEncoded("DER");
+        String base64Text = Base64.getEncoder().encodeToString(derEncodedArray);
+        String pemFileContents = "-----BEGIN RSA PRIVATE KEY-----\n"+base64Text+"\n-----END RSA PRIVATE KEY-----";
+        String privateKeyFullPath = currentDirectory+fileName+"_private.pem";
+        File newPemFile = new File(privateKeyFullPath);
+        if(newPemFile.createNewFile()){
+            FileWriter writeNewPemFile = new FileWriter(privateKeyFullPath);
+            writeNewPemFile.write(pemFileContents);
+            writeNewPemFile.close();
+        }
+
+        System.out.println("test");
+    }
+
+    public static void writePublicKeyToPemFile(RsaPublicKey rsaPublicKey,String fileName) throws IOException {
+        String currentDirectory = System.getProperty("user.dir")+"/keys/";
+        ASN1ObjectIdentifier objectIdentifier = new ASN1ObjectIdentifier("1.2.840.113549.1.1.1");
+        //ASN1Null asn1Null = new ASN1Null();
+        ASN1Integer asn1Modulus = new ASN1Integer(rsaPublicKey.getModulus());
+        ASN1Integer asn1PublicExponent = new ASN1Integer(rsaPublicKey.getPublicExponent());
+        ASN1Integer[] asn1Array = {asn1Modulus,asn1PublicExponent};
+        DLSequence firstSequence = new DLSequence(objectIdentifier);
+        DLSequence secondSequence = new DLSequence(asn1Array);
+        //ASN1BitString bitString = ASN1BitString.getInstance(secondSequence);
+        DERBitString bitString = new DERBitString(secondSequence);
+        ASN1Encodable[] rootArray = {firstSequence,bitString};
+        DLSequence rootSequence = new DLSequence(rootArray);
+        byte[] derEncodedArray = rootSequence.getEncoded("DER");
+        String base64Text = Base64.getEncoder().encodeToString(derEncodedArray);
+        String pemFileContents = "-----BEGIN PUBLIC KEY-----\n"+base64Text+"\n-----END PUBLIC KEY-----";
+        String publicKeyFullPath = currentDirectory+fileName+"_public.pem";
+        File newPemFile = new File(publicKeyFullPath);
+        if(newPemFile.createNewFile()){
+            FileWriter writeNewPemFile = new FileWriter(publicKeyFullPath);
+            writeNewPemFile.write(pemFileContents);
+            writeNewPemFile.close();
+        }
     }
 }
