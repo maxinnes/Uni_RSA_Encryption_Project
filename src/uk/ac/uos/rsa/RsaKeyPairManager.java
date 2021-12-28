@@ -76,6 +76,10 @@ public class RsaKeyPairManager {
         return stringArray;
     }
 
+    public RsaKeyPair getKeyPairByIndex(int indexSelection){
+        return listOfKeyPairs.get(indexSelection);
+    }
+
     private void updateJsonDb() throws IOException {
         HashMap<String,ArrayList<HashMap<String,Object>>> rootJson = new HashMap<String,ArrayList<HashMap<String,Object>>>();
 

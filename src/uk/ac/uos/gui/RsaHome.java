@@ -4,6 +4,8 @@ import uk.ac.uos.gui.*;
 import uk.ac.uos.rsa.RsaKeyPairManager;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +27,13 @@ public class RsaHome {
                 listOfKeyPairs.setListData(rsaKeyPairManager.getListOfNames());
             }
         });
+        listOfKeyPairs.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                //System.out.println("Event - " + listOfKeyPairs.getSelectedIndex());
+                new RsaDisplayKeyPairDialog(rsaKeyPairManager.getKeyPairByIndex(listOfKeyPairs.getSelectedIndex()));
+            }
+        });
 
         // Create frame
         JFrame test = new JFrame("Rsa Tool");
@@ -35,9 +44,4 @@ public class RsaHome {
         test.pack();
         test.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        //RsaHome test1 = new RsaHome();
-    }
-
 }
