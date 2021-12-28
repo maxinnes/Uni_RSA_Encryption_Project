@@ -17,7 +17,6 @@ public class PemViewer {
     private JButton loadPrivateKeyButton;
 
     public static void main(String[] args) {
-        //new TestDialog("test111","test222");
         new PemViewer();
     }
 

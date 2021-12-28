@@ -1,22 +1,18 @@
+package uk.ac.uos.rsa;
+
 import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Random;
-import java.util.HashMap;
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 
 public class RsaKeyPair {
-    /*private final BigInteger p;
-    private final BigInteger q;
-    private final BigInteger n;
-    private final BigInteger phi;
-    private final BigInteger d;
-    private final BigInteger e;*/
-    private final HashMap<String,BigInteger> keyPair = new HashMap<>(); // Make sure this is private
 
-    public static void main(String[] args) { // function for testing
+    private RsaPrivateKey privateKey;
+    private RsaPublicKey publicKey;
+
+    public static void main(String[] args) {
         RsaKeyPair test1 = new RsaKeyPair(2048);
     }
-    // Generate a new public keypair
+
     public RsaKeyPair(int bitLength){
         while (true){
             // Generate random prime numbers
@@ -32,24 +28,19 @@ public class RsaKeyPair {
             if(!p.equals(q) && Objects.equals(gcd(e, phi), BigInteger.ONE)){ // check if prime using big int function
                 BigInteger n = p.multiply(q);
                 BigInteger d = e.modInverse(phi);
-                keyPair.put("e",e);
-                keyPair.put("n",n);
-                keyPair.put("d",d);
+
+                privateKey = new RsaPrivateKey(n,e,d,p,q);
+                publicKey = privateKey.getPublicKey();
+
                 break;
             }
         }
     }
-    // Load existin
-    // Encrypt message
-    public BigInteger encryptMessage(BigInteger message){
-        return message.modPow(keyPair.get("e"),keyPair.get("n"));
+    public RsaKeyPair(RsaPrivateKey parsedPrivateKey, RsaPublicKey parsedPublicKey){
+        privateKey = parsedPrivateKey;
+        publicKey = parsedPublicKey;
     }
-    // Decrypt message
-    public BigInteger decryptMessage(BigInteger message){
-        return message.modPow(keyPair.get("d"),keyPair.get("n"));
-    }
-    // GCD by Euclid’s Algorithm
-    public static BigInteger gcd(BigInteger a, BigInteger b){
+    private static BigInteger gcd(BigInteger a, BigInteger b){
         if(Objects.equals(b, BigInteger.ZERO)){
             return a;
         }else{
