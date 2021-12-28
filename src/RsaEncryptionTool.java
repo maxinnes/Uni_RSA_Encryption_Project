@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class RsaEncryptionTool {
     public static void main(String[] args) throws IOException {
-        RsaKeyPairManager rsaKeyPairManager = new RsaKeyPairManager("db.json");
+        RsaKeyPairManager rsaKeyPairManager = new RsaKeyPairManager("db1.json");
         RsaHome MainWindow = new RsaHome(rsaKeyPairManager);
     }
 }

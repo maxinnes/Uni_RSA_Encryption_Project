@@ -22,6 +22,7 @@ public class RsaHome {
         generateNewKeyPairButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GenerateNewPairKeyMenu generateNewPairKeyMenu = new GenerateNewPairKeyMenu(rsaKeyPairManager);
+                listOfKeyPairs.setListData(rsaKeyPairManager.getListOfNames());
             }
         });
 

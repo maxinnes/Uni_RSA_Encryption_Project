@@ -29,6 +29,7 @@ public class GenerateNewPairKeyMenu extends JDialog{
                 RsaKeyPair newKeyPair = new RsaKeyPair(bitLength,newKeypairName);
                 try {
                     rsaKeyPairManager.addAdditionalKeyPair(newKeyPair);
+                    dispose();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

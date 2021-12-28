@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import uk.ac.uos.pem.PemReader;
 
 public class RsaKeyPairManager {
@@ -24,9 +23,30 @@ public class RsaKeyPairManager {
     public RsaKeyPairManager(String jsonFileName) throws IOException { // TODO if file does not exist, create it
         String currentDirectory = System.getProperty("user.dir");
         Path dbFilePath = Path.of(currentDirectory+"/"+jsonFileName);
+
+        JSONArray listOfJsonKeyPairs;
+        File dbFile = new File(dbFilePath.toString());
+        if(dbFile.exists()){
+            String dbJsonContents = Files.readString(dbFilePath);
+            JSONObject dbJsonObj = new JSONObject(dbJsonContents);
+            listOfJsonKeyPairs = (JSONArray) dbJsonObj.get("keyPairs");
+        }else{
+            HashMap<String,ArrayList<Object>> rootJson = new HashMap<>();
+            rootJson.put("keyPairs",new ArrayList<>());
+            JSONObject jsonContents = new JSONObject(rootJson);
+            if(dbFile.createNewFile()){
+                FileWriter writeNewDbContents = new FileWriter(dbFilePath.toString());
+                writeNewDbContents.write(jsonContents.toString());
+                writeNewDbContents.close();
+            }
+            String dbJsonContents = Files.readString(dbFilePath);
+            JSONObject dbJsonObj = new JSONObject(dbJsonContents);
+            listOfJsonKeyPairs = (JSONArray) dbJsonObj.get("keyPairs");
+        }
+
         String dbJsonContents = Files.readString(dbFilePath);
         JSONObject dbJsonObj = new JSONObject(dbJsonContents);
-        JSONArray listOfJsonKeyPairs = (JSONArray) dbJsonObj.get("keyPairs");
+        //JSONArray listOfJsonKeyPairs = (JSONArray) dbJsonObj.get("keyPairs");
 
         listOfJsonKeyPairs.forEach((jsonParam)->{
             JSONObject convertParam = (JSONObject) jsonParam;
@@ -77,6 +97,8 @@ public class RsaKeyPairManager {
 
     public void addAdditionalKeyPair(RsaKeyPair newKeyPairToAdd) throws IOException {
         listOfKeyPairs.add(newKeyPairToAdd);
+        PemReader.writePrivateKeyToPemFile(newKeyPairToAdd.getPrivateKey(),newKeyPairToAdd.getKeyPairName());
+        PemReader.writePublicKeyToPemFile(newKeyPairToAdd.getPublicKey(), newKeyPairToAdd.getKeyPairName());
         updateJsonDb();
     }
 }
