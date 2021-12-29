@@ -11,10 +11,6 @@ public class RsaKeyPair {
     private int keyPairBitLength;
     private String keyPairName;
 
-    public static void main(String[] args) {
-        RsaKeyPair test1 = new RsaKeyPair(2048,"test1");
-    }
-
     public RsaKeyPair(int bitLength,String parseKeyPairName){
         keyPairBitLength = bitLength;
         keyPairName = parseKeyPairName;
@@ -51,6 +47,17 @@ public class RsaKeyPair {
     }
     public RsaPrivateKey getPrivateKey(){
         return privateKey;
+    }
+    public String encryptMessage(String message){
+        byte[] messageBytes = message.getBytes();
+        BigInteger m = new BigInteger(messageBytes);
+        BigInteger encryptedMessage = publicKey.encrypt(m);
+        return encryptedMessage.toString();
+    }
+    public String decryptMessage(String message){
+        BigInteger encryptedMessage = new BigInteger(message);
+        BigInteger m = privateKey.decryptMessage(encryptedMessage);
+        return new String(m.toByteArray());
     }
     public int getKeyPairBitLength(){
         return keyPairBitLength;

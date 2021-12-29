@@ -1,7 +1,8 @@
 import uk.ac.uos.gui.RsaHome;
 import uk.ac.uos.rsa.RsaKeyPairManager;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class RsaEncryptionTool {
     public static void main(String[] args) throws IOException {

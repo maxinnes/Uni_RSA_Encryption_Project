@@ -1,8 +1,9 @@
 package uk.ac.uos.pem;
 
 import org.bouncycastle.asn1.*;
-import uk.ac.uos.rsa.RsaPublicKey;
 import uk.ac.uos.rsa.RsaPrivateKey;
+import uk.ac.uos.rsa.RsaPublicKey;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
