@@ -21,8 +21,8 @@ public class RsaKeyPair {
         while (true){
             // Generate random prime numbers
             Random rng = new Random();
-            BigInteger p = BigInteger.probablePrime(bitLength, rng);
-            BigInteger q = BigInteger.probablePrime(bitLength, rng);
+            BigInteger p = BigInteger.probablePrime(bitLength/2, rng);
+            BigInteger q = BigInteger.probablePrime(bitLength/2, rng);
 
             // Work out phi
             BigInteger e = new BigInteger("65537");
