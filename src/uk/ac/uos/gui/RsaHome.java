@@ -2,7 +2,6 @@ package uk.ac.uos.gui;
 
 import uk.ac.uos.gui.*;
 import uk.ac.uos.rsa.RsaKeyPairManager;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -15,6 +14,7 @@ public class RsaHome {
     private JPanel mainPanel;
     private JButton generateNewKeyPairButton;
     private JList listOfKeyPairs;
+    private JButton encryptButton;
 
     public RsaHome(RsaKeyPairManager rsaKeyPairManager){
         // Construct components
@@ -23,8 +23,14 @@ public class RsaHome {
         // Add events
         generateNewKeyPairButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GenerateNewPairKeyMenu generateNewPairKeyMenu = new GenerateNewPairKeyMenu(rsaKeyPairManager);
+                new GenerateNewPairKeyMenu(rsaKeyPairManager);
                 listOfKeyPairs.setListData(rsaKeyPairManager.getListOfNames());
+            }
+        });
+        encryptButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new EncryptMessageDialog(rsaKeyPairManager);
+                //listOfKeyPairs.setListData(rsaKeyPairManager.getListOfNames());
             }
         });
         listOfKeyPairs.addListSelectionListener(new ListSelectionListener() {
@@ -42,7 +48,7 @@ public class RsaHome {
         JFrame test = new JFrame("Rsa Tool");
         test.add(mainPanel);
         test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        test.setMinimumSize(new Dimension(550,700));
+        test.setMinimumSize(new Dimension(550,300));
         test.setResizable(false);
         test.pack();
         test.setVisible(true);
