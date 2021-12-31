@@ -17,6 +17,7 @@ public class GenerateNewPairKeyMenu extends JDialog{
 
     public GenerateNewPairKeyMenu(RsaKeyPairManager rsaKeyPairManager){
         // Set combo box options
+        keyPairBitLength.addItem(1024);
         keyPairBitLength.addItem(2048);
         keyPairBitLength.addItem(4096);
 
