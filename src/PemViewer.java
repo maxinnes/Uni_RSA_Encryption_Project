@@ -4,10 +4,12 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 
 import uk.ac.uos.gui.RsaDisplayPrivateKeyDialog;
 import uk.ac.uos.gui.RsaDisplayPublicKeyDialog;
 import uk.ac.uos.pem.PemReader;
+import uk.ac.uos.rsa.RsaKeyPair;
 import uk.ac.uos.rsa.RsaPrivateKey;
 import uk.ac.uos.rsa.RsaPublicKey;
 
@@ -18,10 +20,16 @@ public class PemViewer {
 
     public static void main(String[] args) {
 //        new PemViewer();
-        String test1 = "test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1tes";
-        System.out.println(test1.length());
-        byte[] test2 = test1.getBytes();
-        System.out.println(test2.length*8);
+
+//        String test1 = "test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1tes";
+//        System.out.println(test1.length());
+//        byte[] test2 = test1.getBytes();
+//        System.out.println(test2.length*8);
+
+//        RsaKeyPair test1 = new RsaKeyPair(1024,"test1");
+//        BigInteger test2 = test1.getPublicKey().getModulus();
+//        System.out.println(test2.bitLength());
+
     }
 
     public PemViewer(){

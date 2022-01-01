@@ -19,4 +19,7 @@ public class RsaPublicKey implements RsaKey {
     public BigInteger getPublicExponent(){
         return this.e;
     }
+    public int getKeyBitLength() {
+        return this.n.bitLength();
+    }
 }

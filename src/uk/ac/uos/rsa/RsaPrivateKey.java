@@ -59,4 +59,8 @@ public class RsaPrivateKey implements RsaKey {
     public BigInteger getQ(){
         return this.q;
     }
+
+    public int getKeyBitLength() {
+        return this.n.bitLength();
+    }
 }
