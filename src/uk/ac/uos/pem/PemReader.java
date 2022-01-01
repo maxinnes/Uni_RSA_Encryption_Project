@@ -91,7 +91,8 @@ public abstract class PemReader {
         DLSequence dlSequence = new DLSequence(asn1Array);
         byte[] derEncodedArray = dlSequence.getEncoded("DER");
         String base64Text = Base64.getEncoder().encodeToString(derEncodedArray);
-        String pemFileContents = "-----BEGIN RSA PRIVATE KEY-----\n"+base64Text+"\n-----END RSA PRIVATE KEY-----";
+        //String pemFileContents = "-----BEGIN RSA PRIVATE KEY-----\n"+base64Text+"\n-----END RSA PRIVATE KEY-----";
+        String pemFileContents = "-----BEGIN RSA PRIVATE KEY-----"+System.lineSeparator()+base64Text+System.lineSeparator()+"-----END RSA PRIVATE KEY-----";
         String privateKeyFullPath = currentDirectory+fileName+"_private.pem";
         File newPemFile = new File(privateKeyFullPath);
         if(newPemFile.createNewFile()){
@@ -116,7 +117,8 @@ public abstract class PemReader {
         DLSequence rootSequence = new DLSequence(rootArray);
         byte[] derEncodedArray = rootSequence.getEncoded("DER");
         String base64Text = Base64.getEncoder().encodeToString(derEncodedArray);
-        String pemFileContents = "-----BEGIN PUBLIC KEY-----\n"+base64Text+"\n-----END PUBLIC KEY-----";
+//        String pemFileContents = "-----BEGIN PUBLIC KEY-----\n"+base64Text+"\n-----END PUBLIC KEY-----";
+        String pemFileContents = "-----BEGIN PUBLIC KEY-----"+System.lineSeparator()+base64Text+System.lineSeparator()+"-----END PUBLIC KEY-----";
         String publicKeyFullPath = currentDirectory+fileName+"_public.pem";
         File newPemFile = new File(publicKeyFullPath);
         if(newPemFile.createNewFile()){
