@@ -17,7 +17,11 @@ public class PemViewer {
     private JButton loadPrivateKeyButton;
 
     public static void main(String[] args) {
-        new PemViewer();
+//        new PemViewer();
+        String test1 = "test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1test1tes";
+        System.out.println(test1.length());
+        byte[] test2 = test1.getBytes();
+        System.out.println(test2.length*8);
     }
 
     public PemViewer(){
