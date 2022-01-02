@@ -12,7 +12,7 @@ public class RsaEncryptionTool {
             Files.createDirectories(keyPath);
         }
 
-        RsaKeyPairManager rsaKeyPairManager = new RsaKeyPairManager("db1.json");
+        RsaKeyPairManager rsaKeyPairManager = new RsaKeyPairManager("db.json");
         RsaHome MainWindow = new RsaHome(rsaKeyPairManager);
     }
 }
