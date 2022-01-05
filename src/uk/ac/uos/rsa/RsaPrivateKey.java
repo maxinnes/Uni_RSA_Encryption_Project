@@ -1,5 +1,3 @@
-// TODO Remember to include getPublicKeyMethod
-
 package uk.ac.uos.rsa;
 
 import java.math.BigInteger;

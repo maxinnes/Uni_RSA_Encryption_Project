@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 public class RsaDisplayKeyPairDialog extends JDialog {
     private JPanel contentPane;
@@ -16,6 +19,7 @@ public class RsaDisplayKeyPairDialog extends JDialog {
     private JButton closeButton;
     private JButton updateButton;
     private JButton deleteButton;
+    private JLabel errorText;
 
     public RsaDisplayKeyPairDialog(int listIndex,RsaKeyPairManager rsaKeyPairManager) {
         // Get info
@@ -44,12 +48,22 @@ public class RsaDisplayKeyPairDialog extends JDialog {
         updateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String newName = keyPairNameField.getText();
-                try {
-                    rsaKeyPairManager.renameKeyPair(listIndex,newName);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+
+                ArrayList<String> keyPairNames = new ArrayList<>();
+                Collections.addAll(keyPairNames,rsaKeyPairManager.getListOfNames());
+
+                if(Objects.equals(newName, "")){
+                    errorText.setText("Key pair name cannot be empty");
+                } else if(keyPairNames.contains(newName)){
+                    errorText.setText("A keypair with this name already exists");
+                }else{
+                    try {
+                        rsaKeyPairManager.renameKeyPair(listIndex,newName);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    dispose();
                 }
-                dispose();
             }
         });
 

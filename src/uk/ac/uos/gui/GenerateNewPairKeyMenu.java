@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 import uk.ac.uos.rsa.RsaKeyPair;
 import uk.ac.uos.rsa.RsaKeyPairManager;
@@ -14,6 +17,7 @@ public class GenerateNewPairKeyMenu extends JDialog{
     private JComboBox keyPairBitLength;
     private JButton generateButton;
     private JTextField keyPairName;
+    private JLabel errorText;
 
     public GenerateNewPairKeyMenu(RsaKeyPairManager rsaKeyPairManager){
         // Set combo box options
@@ -27,12 +31,21 @@ public class GenerateNewPairKeyMenu extends JDialog{
                 int bitLength = (Integer) keyPairBitLength.getSelectedItem();
                 String newKeypairName = keyPairName.getText();
 
-                RsaKeyPair newKeyPair = new RsaKeyPair(bitLength,newKeypairName);
-                try {
-                    rsaKeyPairManager.addAdditionalKeyPair(newKeyPair);
-                    dispose();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                ArrayList<String> keyPairNames = new ArrayList<>();
+                Collections.addAll(keyPairNames,rsaKeyPairManager.getListOfNames());
+
+                if(Objects.equals(newKeypairName, "")){
+                    errorText.setText("Key pair name cannot be empty");
+                } else if(keyPairNames.contains(newKeypairName)){
+                    errorText.setText("A keypair with this name already exists");
+                }else{
+                    RsaKeyPair newKeyPair = new RsaKeyPair(bitLength,newKeypairName);
+                    try {
+                        rsaKeyPairManager.addAdditionalKeyPair(newKeyPair);
+                        dispose();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });

@@ -3,7 +3,6 @@ package uk.ac.uos.pem;
 import org.bouncycastle.asn1.*;
 import uk.ac.uos.rsa.RsaPrivateKey;
 import uk.ac.uos.rsa.RsaPublicKey;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -91,7 +90,6 @@ public abstract class PemReader {
         DLSequence dlSequence = new DLSequence(asn1Array);
         byte[] derEncodedArray = dlSequence.getEncoded("DER");
         String base64Text = Base64.getEncoder().encodeToString(derEncodedArray);
-        //String pemFileContents = "-----BEGIN RSA PRIVATE KEY-----\n"+base64Text+"\n-----END RSA PRIVATE KEY-----";
         String pemFileContents = "-----BEGIN RSA PRIVATE KEY-----"+System.lineSeparator()+base64Text+System.lineSeparator()+"-----END RSA PRIVATE KEY-----";
         String privateKeyFullPath = currentDirectory+fileName+"_private.pem";
         File newPemFile = new File(privateKeyFullPath);
@@ -105,7 +103,6 @@ public abstract class PemReader {
     public static void writePublicKeyToPemFile(RsaPublicKey rsaPublicKey,String fileName) throws IOException {
         String currentDirectory = System.getProperty("user.dir")+"/keys/";
         ASN1ObjectIdentifier objectIdentifier = new ASN1ObjectIdentifier("1.2.840.113549.1.1.1");
-        //ASN1Null asn1Null = new ASN1Null();
         ASN1Integer asn1Modulus = new ASN1Integer(rsaPublicKey.getModulus());
         ASN1Integer asn1PublicExponent = new ASN1Integer(rsaPublicKey.getPublicExponent());
         ASN1Integer[] asn1Array = {asn1Modulus,asn1PublicExponent};
@@ -117,7 +114,6 @@ public abstract class PemReader {
         DLSequence rootSequence = new DLSequence(rootArray);
         byte[] derEncodedArray = rootSequence.getEncoded("DER");
         String base64Text = Base64.getEncoder().encodeToString(derEncodedArray);
-//        String pemFileContents = "-----BEGIN PUBLIC KEY-----\n"+base64Text+"\n-----END PUBLIC KEY-----";
         String pemFileContents = "-----BEGIN PUBLIC KEY-----"+System.lineSeparator()+base64Text+System.lineSeparator()+"-----END PUBLIC KEY-----";
         String publicKeyFullPath = currentDirectory+fileName+"_public.pem";
         File newPemFile = new File(publicKeyFullPath);

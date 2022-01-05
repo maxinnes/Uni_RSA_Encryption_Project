@@ -16,7 +16,7 @@ public class RsaKeyPairManager {
     private ArrayList<RsaKeyPair> listOfKeyPairs = new ArrayList<RsaKeyPair>();
     private Path pathOfDb;
 
-    public RsaKeyPairManager(String jsonFileName) throws IOException { // TODO if file does not exist, create it
+    public RsaKeyPairManager(String jsonFileName) throws IOException {
         String currentDirectory = System.getProperty("user.dir");
         Path dbFilePath = Path.of(currentDirectory+"/"+jsonFileName);
 
